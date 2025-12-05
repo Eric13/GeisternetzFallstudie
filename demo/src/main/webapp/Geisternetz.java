@@ -1,3 +1,5 @@
+package demo.src.main.webapp;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

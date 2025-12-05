@@ -1,3 +1,4 @@
+package demo.src.main.webapp;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
