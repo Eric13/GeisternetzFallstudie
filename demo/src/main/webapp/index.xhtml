@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Geisternetz Startseite</title>
+</h:head>
+
+<h:body>
+
+<h2>Geisternetz melden</h2>
+
+<h:form>
+
+    <!-- MELDERDATEN -->
+    <h3>Daten der meldenden Person</h3>
+
+    Name:
+    <h:inputText value="#{geisternetzBean.melder.name}" required="true"/>
+    <br/>
+
+    Telefonnummer (optional):
+    <h:inputText value="#{geisternetzBean.melder.telefon}"/>
+    <br/>
+
+    <!-- NETZDATEN -->
+    <h3>Daten des Geisternetzes</h3>
+
+    Längengrad:
+    <h:inputText value="#{geisternetzBean.netz.laengengrad}" required="true"/>
+    <br/>
+
+    Breitengrad:
+    <h:inputText value="#{geisternetzBean.netz.breitengrad}" required="true"/>
+    <br/>
+
+    Größe (m²):
+    <h:inputText value="#{geisternetzBean.netz.groesse}">
+        <f:convertNumber integerOnly="true"/>
+    </h:inputText>
+    <br/>
+
+    <h:commandButton value="Geisternetz speichern"
+                     action="#{geisternetzBean.speichereNetz}"/>
+
+</h:form>
+</h:body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             version="3.0">
+
+    <persistence-unit name="geisternetz-pu" transaction-type="JTA">
+
+        <!-- Verwendete Entities -->
+        <class>com.Geisternetze.demo.Geisternetz</class>
+        <class>com.Geisternetze.demo.Person</class>
+
+        <!-- Datasource aus Payara -->
+        <jta-data-source>jdbc/geisternetzDS</jta-data-source>
+
+        <properties>
+            <!-- Tabellen automatisch erzeugen -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
