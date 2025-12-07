@@ -1,49 +1,71 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> <h:head>
+    <title>Geisternetzbergung</title>
 
-<h:head>
-    <title>Geisternetz Startseite</title>
+    <style>
+        
+        body {
+            font-family: Arial;
+            margin: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #e9e9e9;
+        }
+
+        .links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 30px;
+        }
+    </style>
 </h:head>
 
 <h:body>
 
-<h2>Geisternetz melden</h2>
+<header>
+    <div class="links">
+        <div>
+            <h2>Geisternetzbergung</h2>
+            <p>Musterstraße 12, 12345 Musterstadt</p>
+        </div>
+    </div>
 
-<h:form>
+    <nav>
+        <h:link value="Registrieren" outcome="registrieren.xhtml" style="margin-left: 20px; text-decoration: none; font-weight: bold;"/>
+        <h:link value="Netz melden" outcome="netzmelden.xhtml" style="margin-left: 20px; text-decoration: none; font-weight: bold;"/>
+        <h:link value="Netze bergen" outcome="netzbergen.xhtml" style="margin-left: 20px; text-decoration: none; font-weight: bold;"/>
+        </nav>
+</header>
 
-    <!-- MELDERDATEN -->
-    <h3>Daten der meldenden Person</h3>
+<main>
+    <h1>Willkommen auf der Plattform zur Geisternetzbergung</h1>
 
-    Name:
-    <h:inputText value="#{geisternetzBean.melder.name}" required="true"/>
-    <br/>
+    <p>
+        Auf dieser Website können Sie Geisternetze melden und als bergende Person
+        deren Bergung übernehmen.
+    </p>
 
-    Telefonnummer (optional):
-    <h:inputText value="#{geisternetzBean.melder.telefon}"/>
-    <br/>
+    <p>
+        Bitte nutzen Sie das Menü oben, um sich zu registrieren oder ein Netz zu melden bzw. zu bergen.
+    </p>
+</main>
 
-    <!-- NETZDATEN -->
-    <h3>Daten des Geisternetzes</h3>
-
-    Längengrad:
-    <h:inputText value="#{geisternetzBean.netz.laengengrad}" required="true"/>
-    <br/>
-
-    Breitengrad:
-    <h:inputText value="#{geisternetzBean.netz.breitengrad}" required="true"/>
-    <br/>
-
-    Größe (m²):
-    <h:inputText value="#{geisternetzBean.netz.groesse}">
-        <f:convertNumber integerOnly="true"/>
-    </h:inputText>
-    <br/>
-
-    <h:commandButton value="Geisternetz speichern"
-                     action="#{geisternetzBean.speichereNetz}"/>
-
-</h:form>
 </h:body>
 </html>

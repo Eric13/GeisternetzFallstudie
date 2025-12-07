@@ -79,7 +79,7 @@ public void setStatus(String status) {
 // this.statusDatum = LocalDateTime.now(); // ENTFERNT, da dies nun von der Bean (zentral) gesteuert wird
 }
     
-    // Hinzugefügt, um den Kompilierungsfehler zu beheben (Fehler im letzten Schritt)
+    
     public void setStatusDatum(LocalDateTime statusDatum) {
         this.statusDatum = statusDatum;
     }

@@ -26,7 +26,7 @@ public class Person {
     // Rolle: MELDEND oder BERGEND
     private String rolle;
 
-    // ---- GETTER UND SETTER -------
+    // ---- GETTER und SETTER -------
 
     public Long getId() {
         return id;

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Netze bergen</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f1f1f1;
+        }
+
+        select {
+            padding: 6px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-bergung {
+            background-color: #ffc107;
+        }
+
+        .btn-geborgen {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</h:head>
+
+<h:body>
+
+<div class="container">
+
+    <h2>Netze bergen / verwalten</h2>
+
+    <!-- Filter -->
+    <div class="topbar">
+        <h:form>
+            <h:outputLabel value="Status filtern:" />
+
+            <h:selectOneMenu value="#{geisternetzBean.statusFilter}">
+                <f:selectItem itemLabel="Alle" itemValue="ALLE"/>
+                <f:selectItem itemLabel="Gemeldet" itemValue="GEMELDET"/>
+                <f:selectItem itemLabel="In Bergung" itemValue="IN_BERGUNG"/>
+                <f:selectItem itemLabel="Geborgen" itemValue="GEBORGEN"/>
+                <f:ajax render="netzTabelle"/>
+            </h:selectOneMenu>
+        </h:form>
+    </div>
+
+    <!-- Tabelle -->
+    <h:form id="netzForm">
+    <h:dataTable id="netzTabelle"
+                 value="#{geisternetzBean.gefilterteNetze}"
+                 var="netz">
+
+        <h:column>
+            <f:facet name="header">ID</f:facet>
+            #{netz.id}
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Koordinaten</f:facet>
+            #{netz.laengengrad}, #{netz.breitengrad}
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Größe</f:facet>
+            #{netz.groesse} m²
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Status</f:facet>
+            #{netz.status}
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Person</f:facet>
+            #{netz.berger != null ? netz.berger.name : netz.melder.name}
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Telefon</f:facet>
+            #{netz.berger != null ? netz.berger.telefon : netz.melder.telefon}
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Karte</f:facet>
+            <h:outputLink value="#{geisternetzBean.googleMapsUrl(netz.laengengrad, netz.breitengrad)}" target="_blank">
+                Auf Karte anzeigen
+            </h:outputLink>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Aktion</f:facet>
+
+            <!-- Nur wenn GEMELDET -->
+            <h:commandButton value="Bergung planen"
+                             styleClass="btn btn-bergung"
+                             rendered="#{netz.status eq 'GEMELDET'}"
+                             action="#{geisternetzBean.aendereStatus(netz.id, 'IN_BERGUNG')}">
+                <f:ajax render="netzForm"/>
+            </h:commandButton>
+
+            <!-- Nur wenn IN_BERGUNG -->
+            <h:commandButton value="Als geborgen melden"
+                             styleClass="btn btn-geborgen"
+                             rendered="#{netz.status eq 'IN_BERGUNG'}"
+                             action="#{geisternetzBean.aendereStatus(netz.id, 'GEBORGEN')}">
+                <f:ajax render="netzForm"/>
+            </h:commandButton>
+
+        </h:column>
+
+    </h:dataTable>
+    </h:form>
+
+    <br/>
+
+    <h:link value="Zurück zur Startseite" outcome="index.xhtml"/>
+
+</div>
+
+</h:body>
+</html>

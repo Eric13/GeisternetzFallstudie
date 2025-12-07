@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Geisternetz melden</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
+            width: 600px;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin-top: 25px;
+        }
+
+        .input-grid td {
+            padding: 5px 0;
+        }
+
+        input[type="text"] {
+            width: 95%;
+            padding: 8px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .save-button {
+            background: #28a745;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cancel-button {
+            background: #6c757d;
+            color: white;
+            padding: 10px 18px;
+            text-decoration: none;
+        }
+
+        .save-button:hover { background:#1e7e34; }
+        .cancel-button:hover { background:#545b62; }
+
+    </style>
+</h:head>
+
+<h:body>
+
+<div class="form-container">
+
+    <h2>Neues Geisternetz melden 🌊</h2>
+
+    <h:messages style="color:red;"/>
+
+    <h:form>
+
+        <h3>Daten der meldenden Person</h3>
+
+        <h:panelGrid columns="2" styleClass="input-grid">
+
+            <h:outputLabel value="Name:" />
+            <h:inputText value="#{geisternetzBean.melder.name}" required="true"/>
+
+            <h:outputLabel value="Telefonnummer (optional):" />
+            <h:inputText value="#{geisternetzBean.melder.telefon}" />
+
+        </h:panelGrid>
+
+
+        <h3>Daten des Geisternetzes</h3>
+
+        <h:panelGrid columns="2" styleClass="input-grid">
+
+            <h:outputLabel value="Längengrad:" />
+            <h:inputText value="#{geisternetzBean.netz.laengengrad}" required="true"/>
+
+            <h:outputLabel value="Breitengrad:" />
+            <h:inputText value="#{geisternetzBean.netz.breitengrad}" required="true"/>
+
+            <h:outputLabel value="Größe (m²):" />
+            <h:inputText value="#{geisternetzBean.netz.groesse}">
+                <f:convertNumber integerOnly="true"/>
+            </h:inputText>
+
+        </h:panelGrid>
+
+        <div class="buttons">
+            <h:commandButton value="Speichern"
+                             action="#{geisternetzBean.speichereNetz}"
+                             styleClass="save-button"/>
+
+            <h:link value="Abbrechen"
+                    outcome="/index.xhtml"
+                    styleClass="cancel-button"/>
+        </div>
+
+    </h:form>
+
+</div>
+
+</h:body>
+</html>

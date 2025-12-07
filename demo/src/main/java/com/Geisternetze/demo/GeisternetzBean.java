@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Diese Bean verbindet die XHTML-Seite mit der Datenbank.
@@ -56,8 +57,45 @@ public class GeisternetzBean implements Serializable {
         // 7. Weiterleitung zur Startseite
         return "index.xhtml?faces-redirect=true";
     }
+    // Status-Filter aus Dropdown
+private String statusFilter = "ALLE";
 
-    // GETTER UND SETTER damit JSF zugreifen kann
+// Liefert entweder alle Netze oder nach Status gefiltert
+public List<Geisternetz> getGefilterteNetze() {
+    if ("ALLE".equals(statusFilter)) {
+        return em.createQuery("SELECT g FROM Geisternetz g", Geisternetz.class).getResultList();
+    }
+    return em.createQuery(
+            "SELECT g FROM Geisternetz g WHERE g.status = :status",
+            Geisternetz.class)
+            .setParameter("status", statusFilter)
+            .getResultList();
+}
+
+// Status ändern (GEMELDET -> IN_BERGUNG -> GEBORGEN)
+@Transactional
+public void aendereStatus(Long id, String neuerStatus) {
+    Geisternetz netzDb = em.find(Geisternetz.class, id);
+    netzDb.setStatus(neuerStatus);
+    netzDb.setStatusDatum(LocalDateTime.now());
+    em.merge(netzDb);
+}
+
+// Google-Maps-Link erzeugen
+public String googleMapsUrl(double lng, double lat) {
+    return "https://www.google.com/maps?q=" + lat + "," + lng;
+}
+
+public String getStatusFilter() {
+    return statusFilter;
+}
+
+public void setStatusFilter(String statusFilter) {
+    this.statusFilter = statusFilter;
+}
+
+
+    // GETTER und SETTER damit JSF zugreifen kann
 
     public Geisternetz getNetz() {
         return netz;
