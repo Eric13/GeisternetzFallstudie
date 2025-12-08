@@ -45,6 +45,7 @@ private Person melder;
 
 /*
 * Person, die das Netz bergt, viele Netze können einer Person zugeteilt werden.
+aber ein Netz hat nur eine Person.
 */
 @ManyToOne
 @JoinColumn(name = "berger_id")
@@ -76,7 +77,10 @@ public String getStatus() {
 
 public void setStatus(String status) {
  this.status = status;
-// this.statusDatum = LocalDateTime.now(); // ENTFERNT, da dies nun von der Bean (zentral) gesteuert wird
+/*  this.statusDatum = LocalDateTime.now(); // ENTFERNT, da dies nun von der Bean (zentral) gesteuert wird, 
+ aktuell weiter belassen falls benötigt.
+ */
+
 }
     
     

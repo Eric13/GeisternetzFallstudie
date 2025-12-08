@@ -26,7 +26,7 @@ public class Person {
     // Rolle: MELDEND oder BERGEND
     private String rolle;
 
-    // ---- GETTER und SETTER -------
+    // GETTER und SETTER 
 
     public Long getId() {
         return id;
@@ -36,7 +36,7 @@ public class Person {
         return name;
     }
 
-    // setzt den Namen der Person
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -45,7 +45,7 @@ public class Person {
         return telefon;
     }
 
-    // setzt die Telefonnummer
+   
     public void setTelefon(String telefon) {
         this.telefon = telefon;
     }
@@ -54,7 +54,6 @@ public class Person {
         return rolle;
     }
 
-    // setzt die Rolle (z.B. MELDEND, BERGEND)
     public void setRolle(String rolle) {
         this.rolle = rolle;
     }

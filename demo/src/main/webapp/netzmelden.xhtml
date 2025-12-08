@@ -4,9 +4,10 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
-    <title>Geisternetz melden</title>
+    <title>Geisternetz melden - Registrierung</title>
 
     <style>
+        /* Grundlayout zur Zentrierung des Formulars auf dem Viewport */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
@@ -18,6 +19,7 @@
             min-height: 100vh;
         }
 
+        /* Container für die Eingabemaske nach dem Box-Modell */
         .form-container {
             background: white;
             padding: 40px;
@@ -36,15 +38,27 @@
             margin-top: 25px;
         }
 
+        /* Fixierung der Spaltenbreite im panelGrid zur Verhinderung von Verschiebungen */
+        .input-grid td:first-child {
+            width: 200px; 
+        }
+
+        .input-grid td:last-child {
+            width: 350px; 
+        }
+
         .input-grid td {
             padding: 5px 0;
         }
 
+        /* Standardisierung der Textfelder für ein einheitliches Design */
         input[type="text"] {
-            width: 95%;
+            width: 100%; 
             padding: 8px;
+            box-sizing: border-box; 
         }
 
+        /* Flexbox-Anordnung der Aktions-Buttons */
         .buttons {
             margin-top: 20px;
             display: flex;
@@ -57,6 +71,7 @@
             padding: 10px 18px;
             border: none;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .cancel-button {
@@ -64,6 +79,9 @@
             color: white;
             padding: 10px 18px;
             text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
         }
 
         .save-button:hover { background:#1e7e34; }
@@ -80,7 +98,7 @@
 
     <h:messages style="color:red;"/>
 
-    <h:form>
+    <h:form id="meldeForm">
 
         <h3>Daten der meldenden Person</h3>
 
@@ -89,11 +107,10 @@
             <h:outputLabel value="Name:" />
             <h:inputText value="#{geisternetzBean.melder.name}" required="true"/>
 
-            <h:outputLabel value="Telefonnummer (optional):" />
+            <h:outputLabel value="Telefon (optional):" />
             <h:inputText value="#{geisternetzBean.melder.telefon}" />
 
         </h:panelGrid>
-
 
         <h3>Daten des Geisternetzes</h3>
 
@@ -111,12 +128,12 @@
             </h:inputText>
 
         </h:panelGrid>
-
+<!-- Anmerkung: nach dem Speichern erscheint automatisch die Startseite-->
         <div class="buttons">
             <h:commandButton value="Speichern"
                              action="#{geisternetzBean.speichereNetz}"
                              styleClass="save-button"/>
-
+<!-- bei Abbrechen Rückkehr zur Startseite-->
             <h:link value="Abbrechen"
                     outcome="/index.xhtml"
                     styleClass="cancel-button"/>

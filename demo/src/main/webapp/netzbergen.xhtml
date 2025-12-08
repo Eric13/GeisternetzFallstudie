@@ -4,9 +4,10 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
-    <title>Netze bergen</title>
+    <title>Netze bergen - Prozessübersicht</title>
 
     <style>
+        /* Grundlegendes Styling */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
@@ -14,6 +15,7 @@
             padding: 30px;
         }
 
+        /* Container zur Zentrierung und optischen Hervorhebung der Inhaltsfläche */
         .container {
             background: white;
             padding: 30px;
@@ -27,6 +29,7 @@
             margin-bottom: 20px;
         }
 
+        /* Tabellen-Design für die übersichtliche Darstellung der Geisternetz-Daten aus der MariaDB */
         table {
             border-collapse: collapse;
             width: 100%;
@@ -42,10 +45,7 @@
             background-color: #f1f1f1;
         }
 
-        select {
-            padding: 6px;
-        }
-
+        /* Aktions-Buttons: Farbliche Differenzierung zur intuitiven Prozesssteuerung */
         .btn {
             padding: 6px 12px;
             border-radius: 4px;
@@ -55,11 +55,11 @@
         }
 
         .btn-bergung {
-            background-color: #ffc107;
+            background-color: #ffc107; /* Gelb signalisiert eine laufende Bergungsplanung */
         }
 
         .btn-geborgen {
-            background-color: #28a745;
+            background-color: #28a745; /* Grün markiert den erfolgreichen Abschluss des Vorgangs */
             color: white;
         }
 
@@ -68,7 +68,6 @@
             justify-content: space-between;
             margin-bottom: 20px;
         }
-
     </style>
 </h:head>
 
@@ -77,10 +76,9 @@
 <div class="container">
 
     <h2>Netze bergen / verwalten</h2>
-
-    <!-- Filter -->
+<!-- Filtermöglichkeit zur Anzeige der Geisternetze basierend auf ihrem aktuellen Status -->
     <div class="topbar">
-        <h:form>
+        <h:form id="filterForm">
             <h:outputLabel value="Status filtern:" />
 
             <h:selectOneMenu value="#{geisternetzBean.statusFilter}">
@@ -88,12 +86,14 @@
                 <f:selectItem itemLabel="Gemeldet" itemValue="GEMELDET"/>
                 <f:selectItem itemLabel="In Bergung" itemValue="IN_BERGUNG"/>
                 <f:selectItem itemLabel="Geborgen" itemValue="GEBORGEN"/>
-                <f:ajax render="netzTabelle"/>
+                <!--AJAX: Asynchronous JavaScript and XML, Webanwendungen können 
+                Daten im Hintergrund mit dem Server auszutauschen, 
+                ohne dass die gesamte Webseite neu geladen werden muss.-->
+                <f:ajax listener="#{geisternetzBean.filterAnwenden}" render=":netzForm:netzTabelle"/>
             </h:selectOneMenu>
         </h:form>
     </div>
-
-    <!-- Tabelle -->
+<!-- Tabelle-->
     <h:form id="netzForm">
     <h:dataTable id="netzTabelle"
                  value="#{geisternetzBean.gefilterteNetze}"
@@ -138,21 +138,19 @@
 
         <h:column>
             <f:facet name="header">Aktion</f:facet>
-
-            <!-- Nur wenn GEMELDET -->
+<!-- Buttons um Status zu ändern-->
             <h:commandButton value="Bergung planen"
                              styleClass="btn btn-bergung"
                              rendered="#{netz.status eq 'GEMELDET'}"
                              action="#{geisternetzBean.aendereStatus(netz.id, 'IN_BERGUNG')}">
-                <f:ajax render="netzForm"/>
+                <f:ajax render="@form"/>
             </h:commandButton>
 
-            <!-- Nur wenn IN_BERGUNG -->
             <h:commandButton value="Als geborgen melden"
                              styleClass="btn btn-geborgen"
                              rendered="#{netz.status eq 'IN_BERGUNG'}"
                              action="#{geisternetzBean.aendereStatus(netz.id, 'GEBORGEN')}">
-                <f:ajax render="netzForm"/>
+                <f:ajax render="@form"/>
             </h:commandButton>
 
         </h:column>
