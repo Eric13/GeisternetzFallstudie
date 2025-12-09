@@ -7,7 +7,7 @@
     <title>Netze bergen - Prozessübersicht</title>
 
     <style>
-        /* Grundlegendes Styling für eine intuitive Benutzeroberfläche nach dem MVP-Prinzip */
+        /* Grundlegendes Styling */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
@@ -76,7 +76,7 @@
 <div class="container">
 
     <h2>Netze bergen / verwalten</h2>
-
+<!-- Filtermöglichkeit zur Anzeige der Geisternetze basierend auf ihrem aktuellen Status -->
     <div class="topbar">
         <h:form id="filterForm">
             <h:outputLabel value="Status filtern:" />
@@ -86,12 +86,14 @@
                 <f:selectItem itemLabel="Gemeldet" itemValue="GEMELDET"/>
                 <f:selectItem itemLabel="In Bergung" itemValue="IN_BERGUNG"/>
                 <f:selectItem itemLabel="Geborgen" itemValue="GEBORGEN"/>
-                
+                <!--AJAX: Asynchronous JavaScript and XML, Webanwendungen können 
+                Daten im Hintergrund mit dem Server auszutauschen, 
+                ohne dass die gesamte Webseite neu geladen werden muss.-->
                 <f:ajax listener="#{geisternetzBean.filterAnwenden}" render=":netzForm:netzTabelle"/>
             </h:selectOneMenu>
         </h:form>
     </div>
-
+<!-- Tabelle-->
     <h:form id="netzForm">
     <h:dataTable id="netzTabelle"
                  value="#{geisternetzBean.gefilterteNetze}"
@@ -136,7 +138,7 @@
 
         <h:column>
             <f:facet name="header">Aktion</f:facet>
-
+<!-- Buttons um Status zu ändern-->
             <h:commandButton value="Bergung planen"
                              styleClass="btn btn-bergung"
                              rendered="#{netz.status eq 'GEMELDET'}"

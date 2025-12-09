@@ -25,6 +25,11 @@ public class Person {
 
     // Rolle: MELDEND oder BERGEND
     private String rolle;
+// Passwort für Registrierung //
+    private String passwort;
+
+
+
 
     // GETTER und SETTER 
 
@@ -57,4 +62,12 @@ public class Person {
     public void setRolle(String rolle) {
         this.rolle = rolle;
     }
+
+    public String getPasswort() {
+    return passwort;
+}
+
+public void setPasswort(String passwort) {
+    this.passwort = passwort;
+}
 }

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Registrierung als Melder oder Berger</title>
+
+    <style>
+        /* Grundlayout zur Zentrierung */
+        body {
+            font-family: sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
+            width: 400px; 
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        h3 { margin-top: 25px; }
+
+        /* Jedes Feld blockweise */
+        .form-field {
+            display: flex;
+            flex-direction: column; /* Label über Input */
+            margin-bottom: 15px;
+        }
+
+        /* Inputs */
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .hint { font-size: 0.8em; color: blue; margin-top: 2px; }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .save-button {
+            background: #28a745;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .save-button:hover { background: #1e7e34; }
+
+        .cancel-button {
+            background: #6c757d;
+            color: white;
+            padding: 10px 18px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .cancel-button:hover { background: #545b62; }
+    </style>
+</h:head>
+
+<h:body>
+<div class="form-container">
+
+    <h2>Nutzerregistrierung ⚓</h2>
+
+    <!-- Globale Nachrichten -->
+    <h:messages globalOnly="true" infoStyle="color:green; font-weight:bold;"
+                errorStyle="color:red; font-weight:bold;" />
+
+    <h:form id="regiForm">
+        <h3>Meine Zugangsdaten</h3>
+
+        <!-- Rolle -->
+        <div class="form-field">
+            <h:outputLabel value="Ihre Rolle:" for="rolle"/>
+            <h:selectOneMenu id="rolle" value="#{registrierungBean.neuePerson.rolle}" required="true"
+                             requiredMessage="Bitte wählen Sie Ihre Rolle.">
+                <f:ajax event="change" render="telefonfeld"/>
+                <f:selectItem itemLabel="-- Rolle wählen --" itemValue="" noSelectionOption="true"/>
+                <f:selectItem itemLabel="Melder" itemValue="MELDER"/>
+                <f:selectItem itemLabel="Berger" itemValue="BERGER"/>
+            </h:selectOneMenu>
+            <h:message for="rolle" style="color:red;"/>
+        </div>
+
+        <!-- Name -->
+        <div class="form-field">
+            <h:outputLabel value="Ihr Name:" for="name"/>
+            <h:inputText id="name" value="#{registrierungBean.neuePerson.name}" required="true"
+                         requiredMessage="Der Name ist Pflicht.">
+                <f:validateRegex pattern="^[A-Za-zÄÖÜäöüß ]+$"/>
+                <f:attribute name="validatorMessage" value="Bitte nur Buchstaben eingeben."/>
+            </h:inputText>
+            <h:message for="name" style="color:red;"/>
+        </div>
+
+        <!-- Passwort -->
+        <div class="form-field">
+            <h:outputLabel value="Passwort:" for="passwort"/>
+            <h:inputSecret id="passwort" value="#{registrierungBean.neuePerson.passwort}" required="true"
+                           requiredMessage="Das Passwort ist Pflicht.">
+                <f:validateLength minimum="6" maximum="30"/>
+                <f:attribute name="validatorMessage" value="6-30 Zeichen."/>
+            </h:inputSecret>
+            <h:message for="passwort" style="color:red;"/>
+        </div>
+
+        <!-- Telefonnummer -->
+        <div class="form-field" id="telefonfeld">
+            <h:outputLabel value="Telefonnummer:" for="telefon"/>
+            <h:inputText id="telefon" value="#{registrierungBean.neuePerson.telefon}"
+                         required="#{registrierungBean.neuePerson.rolle == 'BERGER'}"
+                         requiredMessage="Telefonnummer für Berger erforderlich.">
+                <f:validateLongRange minimum="1000000000" maximum="999999999999"/>
+                <f:attribute name="validatorMessage" value="Nur Zahlen ohne Leerzeichen/Sonderzeichen."/>
+            </h:inputText>
+            <h:outputLabel value="Pflichtfeld für Berger" rendered="#{registrierungBean.neuePerson.rolle == 'BERGER'}"
+                           styleClass="hint"/>
+            <h:message for="telefon" style="color:red;"/>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <h:commandButton value="Registrieren &amp; Speichern"
+                             action="#{registrierungBean.registrieren}"
+                             styleClass="save-button"/>
+            <h:link value="Abbrechen"
+                    outcome="/index.xhtml"
+                    styleClass="cancel-button"/>
+        </div>
+
+    </h:form>
+
+</div>
+</h:body>
+</html>

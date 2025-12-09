@@ -40,22 +40,22 @@
 
         /* Fixierung der Spaltenbreite im panelGrid zur Verhinderung von Verschiebungen */
         .input-grid td:first-child {
-            width: 200px; /* Feste Breite für die Label-Spalte */
+            width: 200px; 
         }
 
         .input-grid td:last-child {
-            width: 350px; /* Feste Breite für die Input-Spalte */
+            width: 350px; 
         }
 
         .input-grid td {
             padding: 5px 0;
         }
 
-        /* Standardisierung der Textfelder für ein einheitliches UX-Design */
+        /* Standardisierung der Textfelder für ein einheitliches Design */
         input[type="text"] {
-            width: 100%; /* Nutzt die gesamte Breite der Tabellenzelle */
+            width: 100%; 
             padding: 8px;
-            box-sizing: border-box; /* Padding wird in die Breite eingerechnet */
+            box-sizing: border-box; 
         }
 
         /* Flexbox-Anordnung der Aktions-Buttons */
@@ -102,38 +102,75 @@
 
         <h3>Daten der meldenden Person</h3>
 
-        <h:panelGrid columns="2" styleClass="input-grid">
+<h:panelGrid columns="2" styleClass="input-grid">
 
-            <h:outputLabel value="Name:" />
-            <h:inputText value="#{geisternetzBean.melder.name}" required="true"/>
+<h:outputLabel value="Name:" />
+            <h:panelGroup>
+                <!-- Validierungsreglen hinzugefügt-->
+                <h:inputText id="name" value="#{geisternetzBean.melder.name}" required="true" requiredMessage="Der Name ist für die Meldung nötig.">
+                    <f:validateRegex pattern="^[A-Za-zÄÖÜäöüß ]+$" />
+                    <f:attribute name="validatorMessage" value="Der Name darf nur Buchstaben und Leerzeichen enthalten." />
+                </h:inputText>
+                <h:message for="name" style="color:red; display:block;"/>
+            </h:panelGroup>
 
-            <h:outputLabel value="Telefon (optional):" />
-            <h:inputText value="#{geisternetzBean.melder.telefon}" />
 
-        </h:panelGrid>
+<h:outputLabel value="Telefon (optional):" />
+        <h:panelGroup>
+                <h:inputText id="telefon" value="#{geisternetzBean.melder.telefon}" required="false">
+                    <!--Validierungsregelen hinzugefügt-->
+                    <f:validateLongRange minimum="1000000000" maximum="999999999999" />
+                    <f:attribute name="validatorMessage" value="Die Telefonnummer muss eine Zahl sein (ohne Leerzeichen/Sonderzeichen)." />
+                </h:inputText>
+                <h:message for="telefon" style="color:red; display:block;"/>
+            </h:panelGroup>
 
-        <h3>Daten des Geisternetzes</h3>
+</h:panelGrid>
 
-        <h:panelGrid columns="2" styleClass="input-grid">
+<h3>Daten des Geisternetzes</h3>
 
-            <h:outputLabel value="Längengrad:" />
-            <h:inputText value="#{geisternetzBean.netz.laengengrad}" required="true"/>
+<h:panelGrid columns="2" styleClass="input-grid">
 
-            <h:outputLabel value="Breitengrad:" />
-            <h:inputText value="#{geisternetzBean.netz.breitengrad}" required="true"/>
+<h:outputLabel value="Längengrad:" />
+            <h:panelGroup>
+                <!--Validierungsregelen hinzugefügt-->
+                <h:inputText id="laenge" value="#{geisternetzBean.netz.laengengrad}" required="true" requiredMessage="Längengrad ist ein Pflichtfeld.">
+                    <f:convertNumber type="number" pattern="#0.000000" />
+                    <f:validateDoubleRange minimum="-180.0" maximum="180.0" /> 
+                    <f:attribute name="validatorMessage" value="Der Wert muss zwischen -180.0 und 180.0 liegen und eine Zahl sein (mit Punkt als Dezimaltrennzeichen)." />
+                </h:inputText>
+                <h:message for="laenge" style="color:red; display:block;"/>
+            </h:panelGroup>
 
-            <h:outputLabel value="Größe (m²):" />
-            <h:inputText value="#{geisternetzBean.netz.groesse}">
-                <f:convertNumber integerOnly="true"/>
-            </h:inputText>
+<h:outputLabel value="Breitengrad:" />
+            <h:panelGroup>
+                <!--Validierungsregelen hinzugefügt-->
+                <h:inputText id="breite" value="#{geisternetzBean.netz.breitengrad}" required="true" requiredMessage="Breitengrad ist ein Pflichtfeld.">
+                    <f:convertNumber type="number" pattern="#0.000000" />
+                    <f:validateDoubleRange minimum="-90.0" maximum="90.0" />
+                    <f:attribute name="validatorMessage" value="Der Wert muss zwischen -90.0 und 90.0 liegen eine Zahl sein (mit Punkt als Dezimaltrennzeichen)." />
+                </h:inputText>
+                <h:message for="breite" style="color:red; display:block;"/>
+            </h:panelGroup>
 
-        </h:panelGrid>
+<h:outputLabel value="Größe (m²):" />
+            <h:panelGroup>
+                <h:inputText id="groesse" value="#{geisternetzBean.netz.groesse}">
+                    <!--Validierungsregelen hinzugefügt-->
+<f:convertNumber integerOnly="true"/>
+                    <f:validateLongRange minimum="1" maximum="1000000" />
+                    <f:attribute name="validatorMessage" value="Die Größe muss eine positive Ganzzahl sein." />
+                </h:inputText>
+                <h:message for="groesse" style="color:red; display:block;"/>
+            </h:panelGroup>
 
+</h:panelGrid>
+<!-- Anmerkung: nach dem Speichern erscheint automatisch die Startseite-->
         <div class="buttons">
             <h:commandButton value="Speichern"
                              action="#{geisternetzBean.speichereNetz}"
                              styleClass="save-button"/>
-
+<!-- bei Abbrechen Rückkehr zur Startseite-->
             <h:link value="Abbrechen"
                     outcome="/index.xhtml"
                     styleClass="cancel-button"/>
