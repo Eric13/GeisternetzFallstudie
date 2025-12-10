@@ -13,7 +13,7 @@
 
         <properties>
             <!--> Tabellen automatisch erzeugen -->
-            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
             <property name="eclipselink.logging.level" value="FINE"/>
         </properties>
 

@@ -63,7 +63,16 @@
 
         <h:link value="Netze bergen" outcome="netzbergen.xhtml" 
                 style="margin-left: 20px; text-decoration: none; font-weight: bold;"/>
-    </nav>
+
+        <!--Neu: Logoutlink, erscheint sobald Nutzer eingeloggt ist, sonst ausgeblendet-->
+ <h:form>
+        <h:commandLink value="Logout" 
+                       action="#{loginBean.logout}" 
+                       rendered="#{loginBean.loggedIn}"
+                       style="margin-left: 20px; text-decoration: none; font-weight: bold; color: red;"/>
+    </h:form>
+</nav>
+
 </header>
 
 <main>

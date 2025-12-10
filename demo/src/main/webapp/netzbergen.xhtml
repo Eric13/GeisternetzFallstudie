@@ -73,9 +73,26 @@
 
 <h:body>
 
-<div class="container">
+<!-- Neu: Prüfen ob Nutzer eingeloggt ist-->
+    <f:event type="preRenderView" listener="#{loginBean.checkBergerAccess}" />
+    
+   
+<div class="container"> 
+
+
 
     <h2>Netze bergen / verwalten</h2>
+<h:messages id="globaleNachrichten" 
+                globalOnly="true" 
+                layout="list"
+                errorStyle="color:red; font-weight:bold; list-style-type: none;"
+                warnStyle="color:orange; font-weight:bold; list-style-type: none;"
+                infoStyle="color:green; font-weight:bold; list-style-type: none;"/>
+    
+    
+    
+
+
 <!-- Filtermöglichkeit zur Anzeige der Geisternetze basierend auf ihrem aktuellen Status -->
     <div class="topbar">
         <h:form id="filterForm">
@@ -95,6 +112,8 @@
     </div>
 <!-- Tabelle-->
     <h:form id="netzForm">
+
+    
     <h:dataTable id="netzTabelle"
                  value="#{geisternetzBean.gefilterteNetze}"
                  var="netz">
@@ -143,14 +162,14 @@
                              styleClass="btn btn-bergung"
                              rendered="#{netz.status eq 'GEMELDET'}"
                              action="#{geisternetzBean.aendereStatus(netz.id, 'IN_BERGUNG')}">
-                <f:ajax render="@form"/>
+                <f:ajax render=":netzForm:netzTabelle :globaleNachrichten"/>
             </h:commandButton>
 
             <h:commandButton value="Als geborgen melden"
                              styleClass="btn btn-geborgen"
                              rendered="#{netz.status eq 'IN_BERGUNG'}"
                              action="#{geisternetzBean.aendereStatus(netz.id, 'GEBORGEN')}">
-                <f:ajax render="@form"/>
+                <f:ajax render=":netzForm:netzTabelle :globaleNachrichten"/>
             </h:commandButton>
 
         </h:column>
