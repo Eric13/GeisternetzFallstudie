@@ -14,6 +14,21 @@
         .login-button { background: #007bff; color: white; padding: 12px; border: none; width: 100%; cursor: pointer; font-weight: bold; border-radius: 4px; }
         .login-button:hover { background: #0056b3; }
         .reg-link { display: block; text-align: center; margin-top: 15px; font-size: 0.9em; text-decoration: none; color: #666; }
+  .cancel-link {
+    /*Abbrechen Button Styling*/
+            display: block; 
+            text-align: center; 
+            margin-top: 15px;
+            font-size: 0.9em; 
+            color: #6c757d; /* (Grau) */
+            text-decoration: none;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .cancel-link:hover {
+            background-color: #e9ecef;
+        }
     </style>
 </h:head>
 
@@ -42,8 +57,11 @@
         <h:commandButton value="Anmelden" 
                          action="#{loginBean.login}" 
                          styleClass="login-button"/>
-        <!--eventuell hinzufügen???-->
-        <!--<h:link value="Noch kein Konto? Hier registrieren" outcome="registrierung.xhtml" styleClass="reg-link" />-->
+    
+        
+        <h:link value="Abbrechen" 
+                outcome="index.xhtml" 
+                styleClass="cancel-link" />
         
     </h:form>
 </div>
