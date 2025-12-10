@@ -74,26 +74,13 @@
 <h:body>
 
 <!-- Neu: Prüfen ob Nutzer eingeloggt ist-->
-    <f:event type="preRenderView" listener="#{loginBean.checkBergerAccess}" />
-    
-   
-<div class="container"> 
+<f:event type="preRenderView" listener="#{loginBean.checkBergerAccess}" />
 
-
+<div class="container">
 
     <h2>Netze bergen / verwalten</h2>
-<h:messages id="globaleNachrichten" 
-                globalOnly="true" 
-                layout="list"
-                errorStyle="color:red; font-weight:bold; list-style-type: none;"
-                warnStyle="color:orange; font-weight:bold; list-style-type: none;"
-                infoStyle="color:green; font-weight:bold; list-style-type: none;"/>
-    
-    
-    
 
-
-<!-- Filtermöglichkeit zur Anzeige der Geisternetze basierend auf ihrem aktuellen Status -->
+    <!-- Filtermöglichkeit zur Anzeige der Geisternetze basierend auf ihrem aktuellen Status -->
     <div class="topbar">
         <h:form id="filterForm">
             <h:outputLabel value="Status filtern:" />
@@ -104,81 +91,121 @@
                 <f:selectItem itemLabel="In Bergung" itemValue="IN_BERGUNG"/>
                 <f:selectItem itemLabel="Geborgen" itemValue="GEBORGEN"/>
                 <!--AJAX: Asynchronous JavaScript and XML, Webanwendungen können 
-                Daten im Hintergrund mit dem Server auszutauschen, 
+                Daten im Hintergrund mit dem Server auszutauschen,
                 ohne dass die gesamte Webseite neu geladen werden muss.-->
                 <f:ajax listener="#{geisternetzBean.filterAnwenden}" render=":netzForm:netzTabelle"/>
             </h:selectOneMenu>
         </h:form>
     </div>
-<!-- Tabelle-->
+
+    <!-- Tabelle + globale Nachrichten -->
     <h:form id="netzForm">
 
+<!-- 
+    GLOBALE FEHLER- UND INFOAUSGABE
+    - Muss im selben <h:form> stehen wie die Buttons!  
+    - Wird per AJAX neu gerendert (siehe f:ajax render="...")  
+    - showSummary + showDetail = zeigt vollständige Texte statt nur "Fehler"
+    - Styles: Rot für Fehler, Grün für Erfolg, Orange für Hinweise
+    -  Globale Nachrichten-Ausgabe:
+    - showSummary="true" zeigt den Nachrichtentitel (z. B. "Fehler")
+    - showDetail="true" zeigt den vollständigen Meldungstext -->
     
-    <h:dataTable id="netzTabelle"
-                 value="#{geisternetzBean.gefilterteNetze}"
-                 var="netz">
 
-        <h:column>
-            <f:facet name="header">ID</f:facet>
-            #{netz.id}
-        </h:column>
 
-        <h:column>
-            <f:facet name="header">Koordinaten</f:facet>
-            #{netz.laengengrad}, #{netz.breitengrad}
-        </h:column>
+<h:messages id="globaleNachrichten"
+            globalOnly="true"          
+            layout="list"              
+            showSummary="false"         
+            showDetail="true"          
+            errorStyle="color:red; font-weight:bold; list-style-type:none;"
+            warnStyle="color:orange; font-weight:bold; list-style-type:none;"
+            infoStyle="color:green; font-weight:bold; list-style-type:none;"/>
 
-        <h:column>
-            <f:facet name="header">Größe</f:facet>
-            #{netz.groesse} m²
-        </h:column>
 
-        <h:column>
-            <f:facet name="header">Status</f:facet>
-            #{netz.status}
-        </h:column>
 
-        <h:column>
-            <f:facet name="header">Person</f:facet>
-            #{netz.berger != null ? netz.berger.name : netz.melder.name}
-        </h:column>
+        <h:dataTable id="netzTabelle"
+             value="#{geisternetzBean.gefilterteNetze}"
+             var="netz"
+             rowKey="#{netz.id}"> <!-- WICHTIG: Erzwingt UI-Aktualisierung! -->
 
-        <h:column>
-            <f:facet name="header">Telefon</f:facet>
-            #{netz.berger != null ? netz.berger.telefon : netz.melder.telefon}
-        </h:column>
+    <h:column>
+        <f:facet name="header">ID</f:facet>
+        #{netz.id}
+    </h:column>
 
-        <h:column>
-            <f:facet name="header">Karte</f:facet>
-            <h:outputLink value="#{geisternetzBean.googleMapsUrl(netz.laengengrad, netz.breitengrad)}" target="_blank">
-                Auf Karte anzeigen
-            </h:outputLink>
-        </h:column>
+    <h:column>
+        <f:facet name="header">Koordinaten</f:facet>
+        #{netz.laengengrad}, #{netz.breitengrad}
+    </h:column>
 
-        <h:column>
-            <f:facet name="header">Aktion</f:facet>
-<!-- Buttons um Status zu ändern-->
-            <h:commandButton value="Bergung planen"
-                             styleClass="btn btn-bergung"
-                             rendered="#{netz.status eq 'GEMELDET'}"
-                             action="#{geisternetzBean.aendereStatus(netz.id, 'IN_BERGUNG')}">
-                <f:ajax render=":netzForm:netzTabelle :globaleNachrichten"/>
-            </h:commandButton>
+    <h:column>
+        <f:facet name="header">Größe</f:facet>
+        #{netz.groesse} m²
+    </h:column>
 
-            <h:commandButton value="Als geborgen melden"
-                             styleClass="btn btn-geborgen"
-                             rendered="#{netz.status eq 'IN_BERGUNG'}"
-                             action="#{geisternetzBean.aendereStatus(netz.id, 'GEBORGEN')}">
-                <f:ajax render=":netzForm:netzTabelle :globaleNachrichten"/>
-            </h:commandButton>
+    <h:column>
+        <f:facet name="header">Status</f:facet>
+        #{netz.status}
+    </h:column>
 
-        </h:column>
+    <h:column>
+        <f:facet name="header">Person</f:facet>
+        #{netz.berger != null ? netz.berger.name : netz.melder.name}
+    </h:column>
 
-    </h:dataTable>
+    <h:column>
+        <f:facet name="header">Telefon</f:facet>
+        #{netz.berger != null ? netz.berger.telefon : netz.melder.telefon}
+    </h:column>
+
+    <h:column>
+        <f:facet name="header">Koordinaten</f:facet>
+ #{netz.laengengrad}, #{netz.breitengrad}
+ </h:column>
+
+<h:column>
+<f:facet name="header">Position</f:facet>
+
+<h:outputLink value="https://www.google.com/maps/search/?api=1&amp;query=#{netz.breitengrad},#{netz.laengengrad}" 
+rendered="#{netz.status eq 'GEMELDET' or netz.status eq 'IN_BERGUNG'}"
+ target="_blank"
+style="font-weight: bold; color: #007bff;">
+Auf Karte anzeigen
+</h:outputLink>
+ 
+ <h:outputText value="-" 
+ rendered="#{netz.status eq 'GEBORGEN'}" />
+ </h:column>
+
+
+
+    <h:column>
+        <f:facet name="header">Aktion</f:facet>
+
+        <!-- Buttons um Status zu ändern -->
+        <h:commandButton value="Bergung planen"
+                 styleClass="btn btn-bergung"
+                 rendered="#{netz.status eq 'GEMELDET'}"
+                 action="#{geisternetzBean.aendereStatus(netz.id, 'IN_BERGUNG')}">
+    <!-- execute="@this" sendet nur den Button selbst an Server; render aktualisiert das ganze Formular -->
+    <f:ajax execute="@this" render="@form" />
+</h:commandButton>
+
+<h:commandButton value="Als geborgen melden"
+                 styleClass="btn btn-geborgen"
+                 rendered="#{netz.status eq 'IN_BERGUNG'}"
+                 action="#{geisternetzBean.aendereStatus(netz.id, 'GEBORGEN')}">
+    <f:ajax execute="@this" render="@form" />
+</h:commandButton>
+
+    </h:column>
+</h:dataTable>
+
+
     </h:form>
 
     <br/>
-
     <h:link value="Zurück zur Startseite" outcome="index.xhtml"/>
 
 </div>

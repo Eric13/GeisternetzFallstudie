@@ -169,7 +169,7 @@ Person eingeloggterBerger = loginBean.getEingeloggtePerson();
                 
                 context.addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg", 
-                    "Netz erfolgreich zur Bergung übernommen. **Button wird aktualisiert.**")); // NEUE Erfolgsmeldung
+                    "Netz erfolgreich zur Bergung übernommen.")); // NEUE Erfolgsmeldung
                 
             } else {
                 context.addMessage(null, 
