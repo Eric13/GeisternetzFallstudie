@@ -136,7 +136,7 @@
                          requiredMessage="Telefonnummer für Berger erforderlich.">
                 <f:validateLongRange minimum="1000000000" maximum="999999999999"
                 disabled="#{registrierungBean.neuePerson.rolle != 'BERGER'}"/>
-                <f:attribute name="validatorMessage" value="Nur Zahlen ohne Leerzeichen/Sonderzeichen."/>
+                <f:attribute name="validatorMessage" value="Nur Zahlen ohne Leerzeichen/Sonderzeichen, mind.10 und max. 12 Stellig"/>
             </h:inputText>
             <h:outputLabel value="Pflichtfeld für Berger" rendered="#{registrierungBean.neuePerson.rolle == 'BERGER'}"
                            styleClass="hint"/>
